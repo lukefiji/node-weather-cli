@@ -1,5 +1,9 @@
-const request = require("request");
+require("dotenv").config();
+
 const yargs = require("yargs");
+
+const geocode = require("./geocode/geocode");
+const weather = require("./weather/weather");
 
 const argv = yargs
   .options({
@@ -13,19 +17,23 @@ const argv = yargs
   .help()
   .alias("help", "h").argv;
 
-console.log(argv);
+// First argument of callback: errors
+// Second argument of callback: results
+geocode.geocodeAddress(argv.address, (errorMessage, results) => {
+  if (errorMessage) {
+    console.log(errorMessage);
+  } else {
+    console.log(results.address);
 
-const encodedAddress = encodeURIComponent(argv.address);
-
-// Make a request from Google Geolocation
-request(
-  {
-    url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`,
-    json: true
-  },
-  (error, response, body) => {
-    console.log(`Address: ${body.results[0].formatted_address}`);
-    console.log(`Lat: ${body.results[0].geometry.location.lat}`);
-    console.log(`Lng: ${body.results[0].geometry.location.lng}`);
+    // Lat, Lng, Callback
+    weather.getWeather(results.lat, results.lng, (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(
+          `It's currently ${results.temp} but it feels like it's ${results.apparentTemp}`
+        );
+      }
+    });
   }
-);
+});

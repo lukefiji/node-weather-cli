@@ -1,11 +1,12 @@
 {
-  "name": "node-weather",
+  "name": "node-weather-cli",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/lukefiji/node-notes",
   "author": "Luke Fiji <luke.fiji@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "request": "2.73.0",
     "yargs": "4.8.1"
   }
