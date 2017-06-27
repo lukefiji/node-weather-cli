@@ -23,7 +23,7 @@ geocode.geocodeAddress(argv.address, (errorMessage, results) => {
   if (errorMessage) {
     console.log(errorMessage);
   } else {
-    console.log(results.address);
+    console.log(`Location: ${results.address}`);
 
     // Lat, Lng, Callback
     weather.getWeather(results.lat, results.lng, (error, results) => {
